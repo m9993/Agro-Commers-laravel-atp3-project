@@ -17,4 +17,6 @@
 Route::get('/', 'CustomerController@index')->name('index');
 Route::get('/github', 'CustomerController@github')->name('customer.github');
 Route::get('/github/redirect', 'CustomerController@githubRedirect')->name('customer.github.redirect');
-Route::get('/home', 'CustomerController@home')->name('customer.home');
+
+
+// Route::get('/home', 'CustomerController@home')->name('customer.home');

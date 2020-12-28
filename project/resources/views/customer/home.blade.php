@@ -28,7 +28,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a href="#page-top" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fa fa-user mr-1 pr-1" aria-hidden="true"></i>Welcome, <%= userProfile.uname %> </a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a href="#page-top" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fa fa-user mr-1 pr-1" aria-hidden="true"></i>Welcome, {{session('profile.name')}} </a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a href="/customer/editProfile" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-user-edit mr-1 pr-1"></i>Profile</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a href="#contact" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-envelope mr-1 pr-1"></i>Contact</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a href="/logout" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-sign-out-alt mr-1 pr-1"></i>Logout</a></li>
@@ -52,17 +52,21 @@
 
                 <!--Body Section 2  -->
         <section class="page-section portfolio p-3" id="portfolio">
-            <div class="container">
-                <%
-                if(typeof alert!='undefined'){
-                alert.forEach( function(i){ %>
-                    <div class="mb-5 alert alert-<%= i.type%>" role="alert">
-                        <%= i.msg %>
+            <div class="container mb-2">
+                @if(count($errors)>0)
+                    <div class="alert alert-danger p-3" role="alert">
+                    @foreach($errors->all() as $err)
+                    {{$err}} <br>
+                    @endforeach
                     </div>
-                    
-                <%
-                    }); }
-                %>
+                @endif
+
+                @if(session('msg'))
+                <div class="'alert alert-{{session('type')}} p-3" role="alert">
+                {{session('msg')}}
+                </div>
+                @endif
+            </div>
 
 
                 <div class="form-group">
@@ -72,8 +76,7 @@
 
                 
                 <div class="d-flex flex-wrap justify-content-center" id="productCart">
-                <%
-                products.forEach( function(i){ %>
+                <!--  -->
                     
                         <div class="card m-4 shadow" style="width: 18rem;">
                             <img class="card-img-top" src="<%= i.iimage %>" alt="Card image cap">
@@ -86,9 +89,7 @@
                             <a href="/customer/add-to-cart/<%= i.iid %>" class="btn btn-primary px-2 py-1 <% var d='disabled'; if(i.istatus!='available'){%> <%= d %> <%} %>" >Add to cart</a>
                             </div>
                         </div>
-                <%
-                    }); 
-                %>                             
+                <!--  -->
 
                 </div>
 
@@ -115,7 +116,6 @@
                 <!-- Contact Section Form-->
                 <div class="row">
                     <div class="col-lg-8 mx-auto">
-                        <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
                         <form id="contactForm" name="sentMessage" method="POST">
                             <div class="control-group">
                                 <div class="form-group floating-label-form-group controls mb-0 pb-2">

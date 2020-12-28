@@ -23,8 +23,8 @@ class CustomerController extends Controller
         // dd($user);
         // shows data  
 
-        $getUsers=Users::all()->where('email', $user->email);
-        if(count($getUsers)<1){   
+        $getUser=Users::all()->where('email', $user->email);
+        if(count($getUser)<1){   
             $newUser = new Users();
             $newUser->name = $user->name;
             $newUser->role = 'customer';
@@ -34,11 +34,16 @@ class CustomerController extends Controller
             $newUser->address = $user->user['location'];
             $newUser->password = '123';
             $newUser->save();
+
+            $req->session()->flash('msg',$newUser->name.' ('.$newUser->role.') is registered.');
+            $req->session()->flash('type','success');
+        }else{
+            $req->session()->flash('msg', 'GitHub login successful.');
+            $req->session()->flash('type','success');
         }
-        return redirect()->route('customer.home');
-    }
-    public function home(Request $req)
-    {
+        $getUser=Users::all()->where('email', $user->email);
+        $req->session()->put('profile',$getUser[0]);
         return view('customer.home');
+        
     }
 }
