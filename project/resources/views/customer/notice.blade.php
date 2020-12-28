@@ -36,23 +36,28 @@
                 </div>
             </div>
         </nav>
+
+
+
+
                <!--Body Section-->
         <section class="page-section portfolio" id="portfolio">
             <div class="container">
-                <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a"><i class="fas fa-volume-up"></i> Notice</a>
+                <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a active"><i class="fas fa-volume-up"></i> Notice</a>
                 <a href="/customer/email" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-envelope"></i> Emails</a>
                 <a href="/customer/history" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-history"></i> History</a>
                 <a href="/customer/cart" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-shopping-cart"></i> Cart</a>
             </div>
-            
-
         </section>
 
 
 
+
+        
                 <!--Body Section 2  -->
-        <section class="page-section portfolio p-3" id="portfolio">
+        <section class="page-section portfolio p-3 mb-5" id="portfolio">
             <div class="container">
+
                 <%
                 if(typeof alert!='undefined'){
                 alert.forEach( function(i){ %>
@@ -65,80 +70,45 @@
                 %>
 
 
-                <div class="form-group">
-                    <input id="searchKey" class="form-control form-control-lg" type="text" placeholder="Search product">
-                </div>
+                <table class="table table-borderless table-hover shadow">
+                    <thead>
+                      <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Notice</th>
+                      </tr>
+                    </thead>
+                    <tbody>
 
-
-                
-                <div class="d-flex flex-wrap justify-content-center" id="productCart">
-                <%
-                products.forEach( function(i){ %>
+                    <%
+                    notice.forEach( function(std){ %>
+                      <tr>
+                        <th> <%= std.nid %></th>
+                        <td> <%= std.notice %></td>
+                      </tr>
+                    <%
+                        }); 
+                    %>
                     
-                        <div class="card m-4 shadow" style="width: 18rem;">
-                            <img class="card-img-top" src="<%= i.iimage %>" alt="Card image cap">
-                            <div class="card-body">
-                            <h5 class="card-title"><%= i.iname %></h5>
-                            <p class="card-text mb-2"><b>Price: </b><%= i.iprice %> ৳</p>
-                            <p class="card-text mb-2"><b>Shop: </b><%= i.shname %></p>
-                            <p class="card-text mb-2"><b>Details: </b><%= i.idetails %></p>
-                            <p class="card-text mb-2"><b>Status: </b><%= i.istatus %></p>
-                            <a href="/customer/add-to-cart/<%= i.iid %>" class="btn btn-primary px-2 py-1 <% var d='disabled'; if(i.istatus!='available'){%> <%= d %> <%} %>" >Add to cart</a>
-                            </div>
-                        </div>
-                <%
-                    }); 
-                %>                             
-
-                </div>
-
+                    </tbody>
+                  </table>
+               
+                
+                
                 
 
 
 
 
 
+
             </div>
         </section>
 
 
 
 
-       
-        <!-- Contact Section-->
-        <section class="page-section" id="contact">
-            <hr>
-            <div class="container">
-                <!-- Contact Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Contact</h2>
-                <hr>
-                <!-- Contact Section Form-->
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19.-->
-                        <form id="contactForm" name="sentMessage" method="POST">
-                            <div class="control-group">
-                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                                    <label>Email Address</label>
-                                    <input name="receivermail" class="form-control" id="email" type="email" placeholder="Email Address"  data-validation-required-message="Please enter your email address." />
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                                    <label>Message</label>
-                                    <textarea name="conmessage" class="form-control" id="message" rows="5" placeholder="Message"  data-validation-required-message="Please enter a message."></textarea>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <br />
-                            <div id="success"></div>
-                            <div class="form-group"><button class="btn btn-primary" id="sendMessageButton" type="submit">Send</button></div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+
+
         <!-- Footer-->
         <footer class="footer text-center">
             <div class="container">
@@ -197,52 +167,5 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
         <!-- Core theme JS-->
         <script src="/js/scripts.js"></script>
-
-
-
-        <!-- Ajax Search -->
-        <script>
-            $(document).ready(()=>{
-                $('#searchKey').on('keyup',()=>{
-                var key= $('#searchKey').val();
-                    $.ajax({
-                        type: 'get',
-                        url:"/customer/searchProduct",
-                        data: {searchKey: key},
-                        success:(res)=>{
-                            // alert(res.products[0]);
-                            var data="";
-                            
-                            res.products.forEach( function(i){
-                                var d=''; 
-                                if(i.istatus!='available'){d='disabled';}
-                                    var cart=
-                                    "<div class='card m-4 shadow' style='width: 18rem;'>"
-                                        +"<img class='card-img-top' src='"+i.iimage+"' alt='Card image cap'>"
-                                        +"<div class='card-body'>"
-                                        +"<h5 class='card-title'>"+i.iname+"</h5>"
-                                        +"<p class='card-text'><b>Price: </b>"+i.iprice+" ৳</p>"
-                                        +"<p class='card-text'><b>Shop: </b>"+i.shname+"</p>"
-                                        +"<p class='card-text'><b>Details: </b>"+i.idetails+"</p>"
-                                        +"<p class='card-text'><b>Status: </b>"+i.istatus+"</p>"
-                                        +"<a href='/customer/add-to-cart/"+i.iid+"' class='btn btn-primary "+ d +"' >Add to cart</a>"
-                                        +"</div>"
-                                    +"</div>"
-                                    
-                                data+=cart;
-                            });
-                               
-                            
-                            
-                            $('#productCart').html(data);
-                            
-                           
-                        },
-                        error:(res)=>{alert('Error serching!!!!!!!!');}
-                    });
-                });
-            });
-        </script>
-
     </body>
 </html>
