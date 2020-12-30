@@ -50,7 +50,7 @@ class CustomerController extends Controller
     public function home(Request $req)
     {
         $products=Products::all();
-        return view('customer.home')->with('products',$products);;
+        return view('customer.home')->with('products',$products);
     }
     public function searchProducts(Request $req)
     {
@@ -59,5 +59,13 @@ class CustomerController extends Controller
             $products=Products::where('title','like', '%'.$searchKey.'%')->get();
             echo json_encode($products); 
         }   
+    }
+    public function cart(Request $req)
+    {
+        return view('customer.cart');
+    }
+    public function addToCart(Request $req, $pid)
+    {
+        echo $pid;
     }
 }

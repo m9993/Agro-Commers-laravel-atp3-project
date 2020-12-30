@@ -22,7 +22,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
             <div class="container">
-                <a class="navbar-brand js-scroll-trigger" href="/customer">Agro-Commers</a>
+                <a class="navbar-brand js-scroll-trigger" href="{{route('customer.home')}}">Agro-Commers</a>
                 <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fas fa-bars m-0 p-0 mx-1"></i>
                 </button>
@@ -42,7 +42,7 @@
                 <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a"><i class="fas fa-volume-up"></i> Notice</a>
                 <a href="/customer/email" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-envelope"></i> Emails</a>
                 <a href="/customer/history" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-history"></i> History</a>
-                <a href="/customer/cart" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-shopping-cart"></i> Cart</a>
+                <a href="{{route('customer.cart')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-shopping-cart"></i> Cart</a>
             </div>
             
 
@@ -52,9 +52,9 @@
 
                 <!--Body Section 2  -->
         <section class="page-section portfolio p-3" id="portfolio">
-            <div class="container mb-2">
+            <div class="container">
                 @if(count($errors)>0)
-                    <div class="alert alert-danger p-3" role="alert">
+                    <div class="alert alert-danger p-3 mb-4" role="alert">
                     @foreach($errors->all() as $err)
                     {{$err}} <br>
                     @endforeach
@@ -62,11 +62,11 @@
                 @endif
 
                 @if(session('msg'))
-                <div class="'alert alert-{{session('type')}} p-3" role="alert">
+                <div class="'alert alert-{{session('type')}} p-3 mb-4" role="alert">
                 {{session('msg')}}
                 </div>
                 @endif
-            </div>
+            
 
 
                 <div class="form-group">
@@ -87,10 +87,10 @@
                             <p class="card-text mb-2"><b>Description: </b>{{$products[$i]->description}}</p>
                             <p class="card-text mb-2"><b>Status: </b>{{$products[$i]->status}}</p>
                             @if($products[$i]->status=='not available')
-                                <a href="/customer/add-to-cart/{{$products[$i]->pid}}" class="btn btn-primary px-2 py-1 disabled" >Add to cart</a>
+                                <a href="" class="btn btn-primary px-2 py-1 disabled" >Add to cart</a>
                             @endif
                             @if($products[$i]->status=='available')
-                                <a href="/customer/add-to-cart/{{$products[$i]->pid}}" class="btn btn-primary px-2 py-1" >Add to cart</a>
+                                <a href="{{route('customer.add-to-cart',[$products[$i]->pid])}}" class="btn btn-primary px-2 py-1" >Add to cart</a>
                             @endif
                             </div>
                         </div>
@@ -232,7 +232,7 @@
                                         +"<p class='card-text'><b>Shop: </b>"+res[i].shop_name+"</p>"
                                         +"<p class='card-text'><b>Details: </b>"+res[i].description+"</p>"
                                         +"<p class='card-text'><b>Status: </b>"+res[i].status+"</p>"
-                                        +"<a href='/customer/add-to-cart/"+res[i].pid+"' class='btn btn-primary "+ d +"' >Add to cart</a>"
+                                        +"<a href='/add-to-cart/"+res[i].pid+"' class='btn btn-primary "+ d +"' >Add to cart</a>"
                                         +"</div>"
                                     +"</div>"
                                     data+=cart;

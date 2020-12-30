@@ -23,4 +23,6 @@ Route::group(['middleware'=>['profile','role']], function(){
     Route::get('/logout', 'LogoutController@index')->name('customer.logout');
     Route::get('/home', 'CustomerController@home')->name('customer.home');
     Route::get('/searchProducts', 'CustomerController@searchProducts')->name('customer.searchProducts');
+    Route::get('/cart', 'CustomerController@cart')->name('customer.cart');
+    Route::get('/add-to-cart/{pid}', 'CustomerController@addToCart')->name('customer.add-to-cart');
 });

@@ -22,16 +22,16 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
             <div class="container">
-                <a class="navbar-brand js-scroll-trigger" href="/customer">Agro-Commers</a>
+                <a class="navbar-brand js-scroll-trigger" href="{{route('customer.home')}}">Agro-Commers</a>
                 <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fas fa-bars m-0 p-0 mx-1"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a href="#page-top" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fa fa-user mr-1 pr-1" aria-hidden="true"></i>Welcome, <%= userProfile.uname %> </a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a href="#page-top" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fa fa-user mr-1 pr-1" aria-hidden="true"></i>Welcome, {{session('profile.name')}} </a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a href="/customer/editProfile" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-user-edit mr-1 pr-1"></i>Profile</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a href="#contact" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-envelope mr-1 pr-1"></i>Contact</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a href="/logout" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-sign-out-alt mr-1 pr-1"></i>Logout</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a href="{{route('customer.logout')}}" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-sign-out-alt mr-1 pr-1"></i>Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                 <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a"><i class="fas fa-volume-up"></i> Notice</a>
                 <a href="/customer/email" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-envelope"></i> Emails</a>
                 <a href="/customer/history" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-history"></i> History</a>
-                <a href="/customer/cart" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a active"><i class="fas fa-shopping-cart"></i> Cart</a>
+                <a href="{{route('customer.cart')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a active"><i class="fas fa-shopping-cart"></i> Cart</a>
             </div>
         </section>
 
@@ -58,33 +58,33 @@
         <section class="page-section portfolio p-3 mb-5" id="portfolio">
             <div class="container">
 
-                <%
-                if(typeof alert!='undefined'){
-                alert.forEach( function(i){ %>
-                    <div class="mb-5 alert alert-<%= i.type%>" role="alert">
-                        <%= i.msg %>
+                @if(count($errors)>0)
+                    <div class="alert alert-danger p-3 mb-4" role="alert">
+                    @foreach($errors->all() as $err)
+                    {{$err}} <br>
+                    @endforeach
                     </div>
-                    
-                <%
-                    }); }
-                %>
+                @endif
+
+                @if(session('msg'))
+                <div class="'alert alert-{{session('type')}} p-3 mb-4" role="alert">
+                {{session('msg')}}
+                </div>
+                @endif
 
 
 
-                <%
-                var msg='Cart is empty. Please add products.';
-                if(typeof cartData=='undefined'){ %>
+                <!--  -->
                     <div class="container border text-center h6 py-5" id="disable-cart-msg">
-                        <%= msg %>
+                        msg
                     </div>
-                <% } %>
+                
 
 
-                <%
-                if(typeof cartData!='undefined'){ var totalPrice=0; %>
+                
                 <table class="table-hover">
-                <%
-                cartData.forEach( function(i){ %>
+                
+
                 <tr class="border">
                     <td class="px-4 pt-2">
                         <h6> Product Id-<%= i.storedId %> </h6>
@@ -109,9 +109,8 @@
                    
                 
                     
-                <% 
-                totalPrice+=i.storedPrice }); %> 
-                <h5 class="mb-2">Total Price:  <span class="text-danger"> <%= totalPrice %> Taka</span></h5>
+                
+                <h5 class="mb-2">Total Price:  <span class="text-danger"> 100 Taka</span></h5>
                 </table> 
                 <div class="p-5 m-5 ">
                 <form class="border shadow p-4" method="post">
@@ -131,13 +130,7 @@
                     </div>
                 </form>
                 </div>
-                <%
-                }
-                
-                %>
-                
-                
-                
+            
 
 
 
