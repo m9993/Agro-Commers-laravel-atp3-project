@@ -70,29 +70,34 @@
 
 
                 <div class="form-group">
-                    <input id="searchKey" class="form-control form-control-lg" type="text" placeholder="Search product">
+                    <input id="searchKey" class="form-control form-control-lg" type="text" placeholder="Search product title">
                 </div>
 
 
-                @for($i=0; $i< count($products); $i++)
                 <div class="d-flex flex-wrap justify-content-center" id="productCart">
                 <!--  -->
                     
+                @for($i=0; $i< count($products); $i++)
                         <div class="card m-4 shadow" style="width: 18rem;">
                             <img class="card-img-top" src="/img/{{$products[$i]->image}}" alt="Card image cap">
                             <div class="card-body">
-                            <h5 class="card-title">{{$products[$i]->name}}</h5>
+                            <h5 class="card-title">{{$products[$i]->title}}</h5>
                             <p class="card-text mb-2"><b>Price: </b>{{$products[$i]->price}} ৳</p>
                             <p class="card-text mb-2"><b>Shop: </b>{{$products[$i]->shop_name}}</p>
-                            <p class="card-text mb-2"><b>Details: </b>{{$products[$i]->description}}</p>
+                            <p class="card-text mb-2"><b>Description: </b>{{$products[$i]->description}}</p>
                             <p class="card-text mb-2"><b>Status: </b>{{$products[$i]->status}}</p>
-                            <a href="/customer/add-to-cart/<%= i.iid %>" class="btn btn-primary px-2 py-1 disabled" >Add to cart</a>
+                            @if($products[$i]->status=='not available')
+                                <a href="/customer/add-to-cart/{{$products[$i]->pid}}" class="btn btn-primary px-2 py-1 disabled" >Add to cart</a>
+                            @endif
+                            @if($products[$i]->status=='available')
+                                <a href="/customer/add-to-cart/{{$products[$i]->pid}}" class="btn btn-primary px-2 py-1" >Add to cart</a>
+                            @endif
                             </div>
                         </div>
+                @endfor
                 <!--  -->
 
                 </div>
-                @endfor
 
                 
 
@@ -200,7 +205,9 @@
         <script src="/js/scripts.js"></script>
 
 
-
+        <!-- jquery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <!-- jquery -->
         <!-- Ajax Search -->
         <script>
             $(document).ready(()=>{
@@ -208,36 +215,32 @@
                 var key= $('#searchKey').val();
                     $.ajax({
                         type: 'get',
-                        url:"/customer/searchProduct",
+                        url:"{{ route('customer.searchProducts') }}",
                         data: {searchKey: key},
+                        dataType: 'json',
                         success:(res)=>{
-                            // alert(res.products[0]);
                             var data="";
-                            
-                            res.products.forEach( function(i){
+                            for(var i=0; i<res.length; i++){
                                 var d=''; 
-                                if(i.istatus!='available'){d='disabled';}
+                                if(res[i].status!='available'){d='disabled';}
                                     var cart=
                                     "<div class='card m-4 shadow' style='width: 18rem;'>"
-                                        +"<img class='card-img-top' src='"+i.iimage+"' alt='Card image cap'>"
+                                        +"<img class='card-img-top' src='/img/"+res[i].image+"' alt='Card image cap'>"
                                         +"<div class='card-body'>"
-                                        +"<h5 class='card-title'>"+i.iname+"</h5>"
-                                        +"<p class='card-text'><b>Price: </b>"+i.iprice+" ৳</p>"
-                                        +"<p class='card-text'><b>Shop: </b>"+i.shname+"</p>"
-                                        +"<p class='card-text'><b>Details: </b>"+i.idetails+"</p>"
-                                        +"<p class='card-text'><b>Status: </b>"+i.istatus+"</p>"
-                                        +"<a href='/customer/add-to-cart/"+i.iid+"' class='btn btn-primary "+ d +"' >Add to cart</a>"
+                                        +"<h5 class='card-title'>"+res[i].title+"</h5>"
+                                        +"<p class='card-text'><b>Price: </b>"+res[i].price+" ৳</p>"
+                                        +"<p class='card-text'><b>Shop: </b>"+res[i].shop_name+"</p>"
+                                        +"<p class='card-text'><b>Details: </b>"+res[i].description+"</p>"
+                                        +"<p class='card-text'><b>Status: </b>"+res[i].status+"</p>"
+                                        +"<a href='/customer/add-to-cart/"+res[i].pid+"' class='btn btn-primary "+ d +"' >Add to cart</a>"
                                         +"</div>"
                                     +"</div>"
-                                    
-                                data+=cart;
-                            });
-                               
-                            
-                            
+                                    data+=cart;
+                            }
+                            if(res.length==0){
+                                var data="<b class='text-danger'>No data found.</b>"; 
+                            }
                             $('#productCart').html(data);
-                            
-                           
                         },
                         error:(res)=>{alert('Error serching!!!!!!!!');}
                     });

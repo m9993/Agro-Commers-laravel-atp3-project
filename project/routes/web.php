@@ -20,6 +20,7 @@ Route::get('/github', 'CustomerController@github')->name('customer.github');
 Route::get('/github/redirect', 'CustomerController@githubRedirect')->name('customer.github.redirect');
 
 Route::group(['middleware'=>['profile','role']], function(){
-    Route::get('/home', 'CustomerController@home')->name('customer.home');
     Route::get('/logout', 'LogoutController@index')->name('customer.logout');
+    Route::get('/home', 'CustomerController@home')->name('customer.home');
+    Route::get('/searchProducts', 'CustomerController@searchProducts')->name('customer.searchProducts');
 });

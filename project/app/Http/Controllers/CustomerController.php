@@ -52,4 +52,12 @@ class CustomerController extends Controller
         $products=Products::all();
         return view('customer.home')->with('products',$products);;
     }
+    public function searchProducts(Request $req)
+    {
+        $searchKey = $req->get('searchKey');
+        if($req->ajax()){
+            $products=Products::where('title','like', '%'.$searchKey.'%')->get();
+            echo json_encode($products); 
+        }   
+    }
 }
