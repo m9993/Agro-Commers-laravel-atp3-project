@@ -74,24 +74,25 @@
                 </div>
 
 
-                
+                @for($i=0; $i< count($products); $i++)
                 <div class="d-flex flex-wrap justify-content-center" id="productCart">
                 <!--  -->
                     
                         <div class="card m-4 shadow" style="width: 18rem;">
-                            <img class="card-img-top" src="<%= i.iimage %>" alt="Card image cap">
+                            <img class="card-img-top" src="/img/{{$products[$i]->image}}" alt="Card image cap">
                             <div class="card-body">
-                            <h5 class="card-title"><%= i.iname %></h5>
-                            <p class="card-text mb-2"><b>Price: </b><%= i.iprice %> ৳</p>
-                            <p class="card-text mb-2"><b>Shop: </b><%= i.shname %></p>
-                            <p class="card-text mb-2"><b>Details: </b><%= i.idetails %></p>
-                            <p class="card-text mb-2"><b>Status: </b><%= i.istatus %></p>
-                            <a href="/customer/add-to-cart/<%= i.iid %>" class="btn btn-primary px-2 py-1 <% var d='disabled'; if(i.istatus!='available'){%> <%= d %> <%} %>" >Add to cart</a>
+                            <h5 class="card-title">{{$products[$i]->name}}</h5>
+                            <p class="card-text mb-2"><b>Price: </b>{{$products[$i]->price}} ৳</p>
+                            <p class="card-text mb-2"><b>Shop: </b>{{$products[$i]->shop_name}}</p>
+                            <p class="card-text mb-2"><b>Details: </b>{{$products[$i]->description}}</p>
+                            <p class="card-text mb-2"><b>Status: </b>{{$products[$i]->status}}</p>
+                            <a href="/customer/add-to-cart/<%= i.iid %>" class="btn btn-primary px-2 py-1 disabled" >Add to cart</a>
                             </div>
                         </div>
                 <!--  -->
 
                 </div>
+                @endfor
 
                 
 

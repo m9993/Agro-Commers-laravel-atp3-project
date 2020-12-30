@@ -18,9 +18,9 @@ class VerifyProfile
         if($request->session()->has('profile')){
             return $next($request);
          }else{
-             $request->session()->flash('msg', 'Please login first');
+             $request->session()->flash('msg', 'Please login first.');
              $request->session()->flash('type', 'danger');
-             return redirect('/login');
+             return redirect()->route('login');
          }
     }
 }

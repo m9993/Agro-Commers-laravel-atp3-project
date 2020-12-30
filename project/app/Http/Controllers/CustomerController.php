@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Socialite;
 use App\Users;
+use App\Products;
 
 class CustomerController extends Controller
 {
@@ -48,6 +49,7 @@ class CustomerController extends Controller
     }
     public function home(Request $req)
     {
-        return view('customer.home');
+        $products=Products::all();
+        return view('customer.home')->with('products',$products);;
     }
 }

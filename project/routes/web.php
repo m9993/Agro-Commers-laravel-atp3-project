@@ -14,8 +14,8 @@
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('/', 'CustomerController@index')->name('index');
-Route::get('/login', 'CustomerController@index')->name('index');
+Route::get('/', 'CustomerController@index')->name('login');
+Route::get('/login', 'CustomerController@index')->name('login');
 Route::get('/github', 'CustomerController@github')->name('customer.github');
 Route::get('/github/redirect', 'CustomerController@githubRedirect')->name('customer.github.redirect');
 

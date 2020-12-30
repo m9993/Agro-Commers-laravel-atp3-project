@@ -18,9 +18,9 @@ class VerifyRole
         if($request->session()->has('role')){
             return $next($request);
          }else{
-             $request->session()->flash('msg', 'Please login first');
+             $request->session()->flash('msg', 'User role could not detect. Please login first.');
              $request->session()->flash('type', 'danger');
-             return redirect('/login');
+             return redirect()->route('login');
          }
     }
 }
