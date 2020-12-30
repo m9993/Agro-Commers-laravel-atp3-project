@@ -42,8 +42,12 @@ class CustomerController extends Controller
             $req->session()->flash('type','success');
         }
         $getUser=Users::all()->where('email', $user->email);
-        $req->session()->put('profile',$getUser[0]);
+        $req->session()->put('profile',$getUser[0]);        
+        $req->session()->put('role',$getUser[0]->role);
+        return redirect()->route('customer.home');
+    }
+    public function home(Request $req)
+    {
         return view('customer.home');
-        
     }
 }

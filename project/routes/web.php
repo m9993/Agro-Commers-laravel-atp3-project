@@ -15,8 +15,11 @@
 //     return view('welcome');
 // });
 Route::get('/', 'CustomerController@index')->name('index');
+Route::get('/login', 'CustomerController@index')->name('index');
 Route::get('/github', 'CustomerController@github')->name('customer.github');
 Route::get('/github/redirect', 'CustomerController@githubRedirect')->name('customer.github.redirect');
 
-
-// Route::get('/home', 'CustomerController@home')->name('customer.home');
+Route::group(['middleware'=>['profile','role']], function(){
+    Route::get('/home', 'CustomerController@home')->name('customer.home');
+    Route::get('/logout', 'LogoutController@index')->name('customer.logout');
+});
