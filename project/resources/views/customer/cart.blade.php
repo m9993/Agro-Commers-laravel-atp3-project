@@ -104,58 +104,81 @@
                     <td class="px-4">
                         <h6>Quantity</span></h6>
                     </td>
+                    <td class="px-4">
+                        <h6>Remove</span></h6>
+                    </td>
                 </tr>
                 @for($i=0; $i<count($cartData); $i++)
                 <tr class="border">
-                    <td class="px-4 pt-2">
+                    <td class="px-4">
                         <span> {{$cartData[$i][0]}} </apan>
                     </td>
-                    <td class="px-4 pt-2">    
+                    <td class="px-4">    
                         <span>{{$cartData[$i][1]}}</span>
                     </td>
-                    <td class="px-4 pt-2">    
+                    <td class="px-4">    
                         <span>{{$cartData[$i][2]}}</span>
                     </td>
                     <td class="px-4">
                         <span class="badge badge-success">{{$cartData[$i][4]}} ৳</span>
                     </td>
                     <td class="px-4 pt-2">
-                    <h4><span>
+                    <h4 class='m-0 mb-1'><span>
                             <a href="{{route('customer.add-by-one',[$cartData[$i][0]])}}" class="text-dark"><i class="fas fa-caret-square-up"></i></a>
-                            <a href='/customer/reduceByOne/<%= i.storedId %>' class="text-dark ml-3"><i class="fas fa-caret-square-down"></i></a>
+                            <a href="{{route('customer.reduce-by-one',[$cartData[$i][0]])}}" class="text-dark ml-3"><i class="fas fa-caret-square-down"></i></a>
                         </span>
                         </h4>
                     </td>
                     <td class="px-4">
-                        <span class="badge badge-primary">{{$cartData[$i][3]}}</span>
+                        <span class="badge badge-info">{{$cartData[$i][3]}}</span>
+                    </td>
+                    <td class="px-4">
+                        <a href="{{route('customer.remove',[$cartData[$i][0]])}}" class="text-danger h3"><i class="far fa-times-circle"></i></a>
                     </td>
                 </tr>
                 @endfor
                 
-                   
-                
-                    
-                
+                              
                 <h5 class="mb-2">Total Price:  <span class="text-danger">{{$totalPrice}} Taka</span></h5>
                 </table>
                 
-                <div class="p-5 m-5 ">
-                <form class="border shadow p-4" method="post">
-                    <h3 class="mb-3">Order</h3>
-                    <div class="form-group">
+
+
+                
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-warning mt-3 p-0 px-1" data-toggle="modal" data-target="#exampleModal">
+                    Buy Now                
+                </button>
+                <!-- Modal -->                
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Order</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--  -->
+                        <form class="" method="post">
+                        <label>Please select a shipping method:</label>
+                        <div class="form-group">
                         <select name="shipmethod" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
                             <option selected disabled>Ship method...</option>
                             <option value="Parcel shipping">Parcel shipping</option>
                             <option value="Will take from office">Will take from office</option>
                           </select>
+                        </div>
+                        </form>
+                        <!--  -->
                     </div>
-                    <div class="form-group">
-                        <input name="subtotal" class="form-control" type="text" placeholder="Readonly input here…" readonly value="<%= totalPrice %>">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Buy now</button>
                     </div>
-                </form>
+                </div>
                 </div>
                 @endif
 

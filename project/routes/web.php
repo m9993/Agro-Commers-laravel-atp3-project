@@ -26,4 +26,6 @@ Route::group(['middleware'=>['profile','role']], function(){
     Route::get('/cart', 'CustomerController@cart')->name('customer.cart');
     Route::get('/add-to-cart/{pid}', 'CustomerController@addToCart')->name('customer.add-to-cart');
     Route::get('/add-by-one/{pid}', 'CustomerController@addByOne')->name('customer.add-by-one');
+    Route::get('/reduce-by-one/{pid}', 'CustomerController@reduceByOne')->name('customer.reduce-by-one');
+    Route::get('/remove/{pid}', 'CustomerController@remove')->name('customer.remove');
 });

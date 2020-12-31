@@ -71,14 +71,16 @@ class CustomerController extends Controller
                 $pid=$cart[$i][0];
 
                 $product=Products::where('pid', $pid)->get();
-                $title=$product[0]->title;
-                $shop_name=$product[0]->shop_name;
-                $price=$product[0]->price;
+                if(count($product)!=0){
+                    $title=$product[0]->title;
+                    $shop_name=$product[0]->shop_name;
+                    $price=$product[0]->price;
 
-                $qty=$cart[$i][1];
-                $totalPrice= $totalPrice + ($qty*$price);
-                $item=[$pid, $title, $shop_name, $qty, $price];
-                array_push($cartData,$item);            
+                    $qty=$cart[$i][1];
+                    $totalPrice= $totalPrice + ($qty*$price);
+                    $item=[$pid, $title, $shop_name, $qty, $price];
+                    array_push($cartData,$item); 
+                }           
             }
             // print_r($cartData);
             // echo $totalPrice;
@@ -93,13 +95,13 @@ class CustomerController extends Controller
         // $cart=[[1,2],[8,9]];
         
         if($req->session()->get('cart')==null){
-            $p= new Cart(null);
-            $newCart=$p->add($pid);
+            $c= new Cart(null);
+            $newCart=$c->add($pid);
             $req->session()->put('cart',$newCart);
         }else{
             $oldCart=$req->session()->get('cart');
-            $p= new Cart($oldCart);
-            $newCart=$p->add($pid);
+            $c= new Cart($oldCart);
+            $newCart=$c->add($pid);
             $req->session()->put('cart',$newCart);
         }
         
@@ -115,21 +117,55 @@ class CustomerController extends Controller
         // $cart=[[1,2],[8,9]];
         
         if($req->session()->get('cart')==null){
-            $p= new Cart(null);
-            $newCart=$p->add($pid);
+            $c= new Cart(null);
+            $newCart=$c->add($pid);
             $req->session()->put('cart',$newCart);
         }else{
             $oldCart=$req->session()->get('cart');
-            $p= new Cart($oldCart);
-            $newCart=$p->add($pid);
+            $c= new Cart($oldCart);
+            $newCart=$c->add($pid);
             $req->session()->put('cart',$newCart);
         }
         
         $req->session()->flash('msg', 'Product Id('.$pid.') added by one.');
-        $req->session()->flash('type','success');
+        $req->session()->flash('type','warning');
         return redirect()->route('customer.cart');            
         
     }
     // the method addByOne is same as addToCart. but return view is in cart page
+    
+    public function reduceByOne(Request $req, $pid)
+    {   
+               //[[pid,qty]]
+        // $cart=[[1,2],[8,9]];        
+        
+        $oldCart=$req->session()->get('cart');
+        $c= new Cart($oldCart);
+        $newCart=$c->reduce($pid);
+        $req->session()->put('cart',$newCart);
+        
+        
+        $req->session()->flash('msg', 'Product Id('.$pid.') reduced by one.');
+        $req->session()->flash('type','warning');
+        return redirect()->route('customer.cart'); 
+        
+    }
+
+    public function remove(Request $req, $pid)
+    {   
+               //[[pid,qty]]
+        // $cart=[[1,2],[8,9]];        
+        
+        $oldCart=$req->session()->get('cart');
+        $c= new Cart($oldCart);
+        $newCart=$c->remove($pid);
+        $req->session()->put('cart',$newCart);
+        
+        
+        $req->session()->flash('msg', 'Product Id('.$pid.') removed.');
+        $req->session()->flash('type','warning');
+        return redirect()->route('customer.cart'); 
+        
+    }
     
 }
