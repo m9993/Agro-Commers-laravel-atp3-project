@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Socialite;
 use App\Users;
 use App\Products;
+use App\Cart;
 
 class CustomerController extends Controller
 {
@@ -62,10 +63,73 @@ class CustomerController extends Controller
     }
     public function cart(Request $req)
     {
-        return view('customer.cart');
+        $cart=$req->session()->get('cart');
+        $cartData=[];
+        $totalPrice=0;
+        if($cart!=null){
+            for($i=0; $i<count($cart); $i++){
+                $pid=$cart[$i][0];
+
+                $product=Products::where('pid', $pid)->get();
+                $title=$product[0]->title;
+                $shop_name=$product[0]->shop_name;
+                $price=$product[0]->price;
+
+                $qty=$cart[$i][1];
+                $totalPrice= $totalPrice + ($qty*$price);
+                $item=[$pid, $title, $shop_name, $qty, $price];
+                array_push($cartData,$item);            
+            }
+            // print_r($cartData);
+            // echo $totalPrice;
+        }else{
+        }   
+        return view('customer.cart')->with('cartData',$cartData)->with('totalPrice',$totalPrice);
+        
     }
     public function addToCart(Request $req, $pid)
-    {
-        echo $pid;
+    {   
+               //[[pid,qty]]
+        // $cart=[[1,2],[8,9]];
+        
+        if($req->session()->get('cart')==null){
+            $p= new Cart(null);
+            $newCart=$p->add($pid);
+            $req->session()->put('cart',$newCart);
+        }else{
+            $oldCart=$req->session()->get('cart');
+            $p= new Cart($oldCart);
+            $newCart=$p->add($pid);
+            $req->session()->put('cart',$newCart);
+        }
+        
+        $req->session()->flash('msg', 'Product added to cart.');
+        $req->session()->flash('type','success');
+        return redirect()->route('customer.home');            
+        
     }
+    // the method addByOne is same as addToCart. but return view is in cart page
+    public function addByOne(Request $req, $pid)
+    {   
+               //[[pid,qty]]
+        // $cart=[[1,2],[8,9]];
+        
+        if($req->session()->get('cart')==null){
+            $p= new Cart(null);
+            $newCart=$p->add($pid);
+            $req->session()->put('cart',$newCart);
+        }else{
+            $oldCart=$req->session()->get('cart');
+            $p= new Cart($oldCart);
+            $newCart=$p->add($pid);
+            $req->session()->put('cart',$newCart);
+        }
+        
+        $req->session()->flash('msg', 'Product Id('.$pid.') added by one.');
+        $req->session()->flash('type','success');
+        return redirect()->route('customer.cart');            
+        
+    }
+    // the method addByOne is same as addToCart. but return view is in cart page
+    
 }

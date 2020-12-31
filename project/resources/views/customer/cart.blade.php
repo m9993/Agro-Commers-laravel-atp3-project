@@ -75,43 +75,70 @@
 
 
                 <!--  -->
+                @if(!session('cart'))
                     <div class="container border text-center h6 py-5" id="disable-cart-msg">
-                        msg
+                        No items in cart
                     </div>
+                @endif
                 
 
 
-                
+                @if(session('cart'))
                 <table class="table-hover">
-                
-
                 <tr class="border">
                     <td class="px-4 pt-2">
-                        <h6> Product Id-<%= i.storedId %> </h6>
+                        <h6>Product Id</h6>
                     </td>
                     <td class="px-4 pt-2">    
-                        <h6> <%= i.storedName %> </h6>
+                        <h6>Title</h6>
+                    </td>
+                    <td class="px-4 pt-2">    
+                        <h6>Shop Name</h6>
                     </td>
                     <td class="px-4">
-                        <h6><span class="badge badge-success"><%= i.storedPrice %> ৳</span></h6>
+                        <h6>Price</h6>
                     </td>
                     <td class="px-4 pt-2">
-                        <h5><span>
-                            <a href='/customer/addByOne/<%= i.storedId %>' class="text-dark"><i class="fas fa-caret-square-up"></i></a>
-                            <a href='/customer/reduceByOne/<%= i.storedId %>' class="text-dark ml-3"><i class="fas fa-caret-square-down"></i></a>
-                        </span>
-                        </h5>
+                        <h6>Action</h6>
                     </td>
                     <td class="px-4">
-                        <h6><span class="badge badge-primary"> <%= i.storedQty %> </span></h6>
+                        <h6>Quantity</span></h6>
                     </td>
                 </tr>
+                @for($i=0; $i<count($cartData); $i++)
+                <tr class="border">
+                    <td class="px-4 pt-2">
+                        <span> {{$cartData[$i][0]}} </apan>
+                    </td>
+                    <td class="px-4 pt-2">    
+                        <span>{{$cartData[$i][1]}}</span>
+                    </td>
+                    <td class="px-4 pt-2">    
+                        <span>{{$cartData[$i][2]}}</span>
+                    </td>
+                    <td class="px-4">
+                        <span class="badge badge-success">{{$cartData[$i][4]}} ৳</span>
+                    </td>
+                    <td class="px-4 pt-2">
+                    <h4><span>
+                            <a href="{{route('customer.add-by-one',[$cartData[$i][0]])}}" class="text-dark"><i class="fas fa-caret-square-up"></i></a>
+                            <a href='/customer/reduceByOne/<%= i.storedId %>' class="text-dark ml-3"><i class="fas fa-caret-square-down"></i></a>
+                        </span>
+                        </h4>
+                    </td>
+                    <td class="px-4">
+                        <span class="badge badge-primary">{{$cartData[$i][3]}}</span>
+                    </td>
+                </tr>
+                @endfor
+                
                    
                 
                     
                 
-                <h5 class="mb-2">Total Price:  <span class="text-danger"> 100 Taka</span></h5>
-                </table> 
+                <h5 class="mb-2">Total Price:  <span class="text-danger">{{$totalPrice}} Taka</span></h5>
+                </table>
+                
                 <div class="p-5 m-5 ">
                 <form class="border shadow p-4" method="post">
                     <h3 class="mb-3">Order</h3>
@@ -130,7 +157,7 @@
                     </div>
                 </form>
                 </div>
-            
+                @endif
 
 
 
