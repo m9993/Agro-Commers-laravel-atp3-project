@@ -144,7 +144,8 @@
                 
 
 
-                
+                <form method="post">
+                @csrf
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-warning mt-3 p-0 px-1" data-toggle="modal" data-target="#exampleModal">
                     Buy Now                
@@ -161,16 +162,14 @@
                     </div>
                     <div class="modal-body">
                         <!--  -->
-                        <form class="" method="post">
                         <label>Please select a shipping method:</label>
                         <div class="form-group">
-                        <select name="shipmethod" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                            <option selected disabled>Ship method...</option>
+                        <select name="shipping_method" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                            <option selected disabled>Shipping methods...</option>
                             <option value="Parcel shipping">Parcel shipping</option>
                             <option value="Will take from office">Will take from office</option>
                           </select>
                         </div>
-                        </form>
                         <!--  -->
                     </div>
                     <div class="modal-footer">
@@ -180,6 +179,7 @@
                     </div>
                 </div>
                 </div>
+                </form>
                 @endif
 
 

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Socialite;
 use App\Users;
 use App\Products;
+use App\Orders;
+use App\Invoice;
 use App\Cart;
 
 class CustomerController extends Controller
@@ -84,8 +87,7 @@ class CustomerController extends Controller
             }
             // print_r($cartData);
             // echo $totalPrice;
-        }else{
-        }   
+        }  
         return view('customer.cart')->with('cartData',$cartData)->with('totalPrice',$totalPrice);
         
     }
@@ -164,8 +166,67 @@ class CustomerController extends Controller
         
         $req->session()->flash('msg', 'Product Id('.$pid.') removed.');
         $req->session()->flash('type','warning');
-        return redirect()->route('customer.cart'); 
+        return redirect()->route('customer.cart');        
+    }
+    public function order(Request $req)
+    {  
+        $req->validate([
+            'shipping_method' => 'required'          
+        ]); 
         
+
+
+        $cart=$req->session()->get('cart');
+        $order=[];
+        $totalPrice=0;
+        if($cart!=null){
+            for($i=0; $i<count($cart); $i++){
+                $pid=$cart[$i][0];
+
+                $product=Products::where('pid', $pid)->get();
+                if(count($product)!=0){
+                    $sellerid=$product[0]->sellerid;
+                    $price=$product[0]->price;
+
+                    $qty=$cart[$i][1];
+                    $totalPrice= $totalPrice + ($qty*$price);
+                    $purchase=[$sellerid, $qty, $price];
+                    array_push($order,$purchase); 
+                }           
+            }
+            
+            $newOrder = new Orders();
+            $newOrder->customerid = $req->session()->get('profile')->uid;
+            $newOrder->date = NOW();
+            $newOrder->subtotal = $totalPrice;
+            $newOrder->shipping_method = $req->shipping_method;
+            $newOrder->status = 'pending';
+            $newOrder->save();
+            $lastOrder=DB::table('orders')
+                ->select('oid')
+                ->where('customerid',$req->session()->get('profile')->uid)
+                ->where('status', 'pending')
+                ->orderBy('oid', 'desc')
+                ->first();
+
+            $oid=$lastOrder->oid;
+
+            //adding to invoice
+            for($i=0; $i<count($order); $i++){
+                $newInvoice = new Invoice();
+                $newInvoice->oid = $oid;
+                $newInvoice->sellerid = $order[$i][0];
+                $newInvoice->quantity = $order[$i][1];
+                $newInvoice->price = $order[$i][2];
+                $newInvoice->save();
+            }
+            
+            $req->session()->forget('cart');
+        }
+        
+        $req->session()->flash('msg', 'Order confirmed.');
+        $req->session()->flash('type','success');
+        return redirect()->route('customer.cart');        
     }
     
 }
