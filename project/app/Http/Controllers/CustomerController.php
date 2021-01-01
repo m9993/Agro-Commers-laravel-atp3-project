@@ -9,6 +9,8 @@ use App\Users;
 use App\Products;
 use App\Orders;
 use App\Invoice;
+use App\Order_history;
+
 use App\Cart;
 
 class CustomerController extends Controller
@@ -195,6 +197,15 @@ class CustomerController extends Controller
                 }           
             }
             
+            // checking items available or not
+            if($totalPrice==0){
+                $req->session()->flash('msg', 'Failed. No items selected.');
+                $req->session()->flash('type','danger');
+                return back();
+            }
+            // checking items available or not
+
+
             $newOrder = new Orders();
             $newOrder->customerid = $req->session()->get('profile')->uid;
             $newOrder->date = NOW();
@@ -228,5 +239,18 @@ class CustomerController extends Controller
         $req->session()->flash('type','success');
         return redirect()->route('customer.cart');        
     }
+    public function history(Request $req)
+    {
+        $orders=Orders::all()->where('customerid', $req->session()->get('profile')->uid);
+        return view('customer.history')->with('orders',$orders);
+        
+    }  
+    public function order_details(Request $req, $oid)
+    {
+        $orderDetails = DB::select("SELECT orders.oid, title, invoice.sellerid, shop_name, quantity, invoice.price, subtotal, date, shipping_method, orders.status FROM invoice,orders,products where invoice.oid=orders.oid and invoice.sellerid=products.sellerid and orders.oid=?", [$oid]);
+        // print_r ($users[0]->title);
+        return view('customer.orderDetails')->with('orderDetails',$orderDetails);
+        
+    }  
     
 }

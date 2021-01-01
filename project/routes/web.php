@@ -23,10 +23,15 @@ Route::group(['middleware'=>['profile','role']], function(){
     Route::get('/logout', 'LogoutController@index')->name('customer.logout');
     Route::get('/home', 'CustomerController@home')->name('customer.home');
     Route::get('/searchProducts', 'CustomerController@searchProducts')->name('customer.searchProducts');
+
     Route::get('/cart', 'CustomerController@cart')->name('customer.cart');
     Route::post('/cart', 'CustomerController@order')->name('customer.order');
     Route::get('/add-to-cart/{pid}', 'CustomerController@addToCart')->name('customer.add-to-cart');
     Route::get('/add-by-one/{pid}', 'CustomerController@addByOne')->name('customer.add-by-one');
     Route::get('/reduce-by-one/{pid}', 'CustomerController@reduceByOne')->name('customer.reduce-by-one');
     Route::get('/remove/{pid}', 'CustomerController@remove')->name('customer.remove');
+    
+    Route::get('/history', 'CustomerController@history')->name('customer.history');
+    Route::get('/order_details/{oid}', 'CustomerController@order_details')->name('customer.order_details');
+
 });

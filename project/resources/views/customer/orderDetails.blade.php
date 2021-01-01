@@ -43,9 +43,9 @@
                <!--Body Section-->
         <section class="page-section portfolio" id="portfolio">
             <div class="container">
-                <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a active"><i class="fas fa-volume-up"></i> Notice</a>
+                <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a"><i class="fas fa-volume-up"></i> Notice</a>
                 <a href="/customer/email" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-envelope"></i> Emails</a>
-                <a href="{{route('customer.history')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-history"></i> History</a>
+                <a href="{{route('customer.history')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a active"><i class="fas fa-history"></i> History</a>
                 <a href="{{route('customer.cart')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-shopping-cart"></i> Cart</a>
             </div>
         </section>
@@ -58,36 +58,52 @@
         <section class="page-section portfolio p-3 mb-5" id="portfolio">
             <div class="container">
 
-                <%
-                if(typeof alert!='undefined'){
-                alert.forEach( function(i){ %>
-                    <div class="mb-5 alert alert-<%= i.type%>" role="alert">
-                        <%= i.msg %>
+                @if(count($errors)>0)
+                    <div class="alert alert-danger p-3 mb-4" role="alert">
+                    @foreach($errors->all() as $err)
+                    {{$err}} <br>
+                    @endforeach
                     </div>
-                    
-                <%
-                    }); }
-                %>
+                @endif
 
+                @if(session('msg'))
+                <div class="'alert alert-{{session('type')}} p-3 mb-4" role="alert">
+                {{session('msg')}}
+                </div>
+                @endif
 
+                <div class='text-info h6'>Order Details:</div>
                 <table class="table table-borderless table-hover shadow">
                     <thead>
                       <tr>
-                        <th scope="col">No.</th>
-                        <th scope="col">Notice</th>
+                        <th scope="col">oid</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Seller Id</th>
+                        <th scope="col">Shop</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Order Date</th>
+                        <th scope="col">Shipping Method</th>
+                        <th scope="col">Status</th>
                       </tr>
                     </thead>
                     <tbody>
 
-                    <%
-                    notice.forEach( function(std){ %>
+                    @for($i=0; $i<count($orderDetails); $i++)
                       <tr>
-                        <th> <%= std.nid %></th>
-                        <td> <%= std.notice %></td>
+                        <th>{{$orderDetails[$i]->oid}}</th>
+                        <td>{{$orderDetails[$i]->title}}</td>
+                        <td>{{$orderDetails[$i]->sellerid}}</td>
+                        <td>{{$orderDetails[$i]->shop_name}}</td>
+                        <td>{{$orderDetails[$i]->quantity}}</td>
+                        <td>{{$orderDetails[$i]->price}} ৳</td>
+                        <td>{{$orderDetails[$i]->subtotal}} ৳</td>
+                        <td>{{$orderDetails[$i]->date}}</td>
+                        <td>{{$orderDetails[$i]->shipping_method}}</td>
+                        <td>{{$orderDetails[$i]->status}}</td>
                       </tr>
-                    <%
-                        }); 
-                    %>
+                    @endfor
                     
                     </tbody>
                   </table>

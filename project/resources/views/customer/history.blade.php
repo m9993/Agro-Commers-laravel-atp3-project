@@ -45,7 +45,7 @@
             <div class="container">
                 <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a"><i class="fas fa-volume-up"></i> Notice</a>
                 <a href="/customer/email" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-envelope"></i> Emails</a>
-                <a href="/customer/history" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a active"><i class="fas fa-history"></i> History</a>
+                <a href="{{route('customer.history')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a active"><i class="fas fa-history"></i> History</a>
                 <a href="{{route('customer.cart')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-shopping-cart"></i> Cart</a>
             </div>
         </section>
@@ -58,40 +58,44 @@
         <section class="page-section portfolio p-3 mb-5" id="portfolio">
             <div class="container">
 
-                <%
-                if(typeof alert!='undefined'){
-                alert.forEach( function(i){ %>
-                    <div class="mb-5 alert alert-<%= i.type%>" role="alert">
-                        <%= i.msg %>
+                @if(count($errors)>0)
+                    <div class="alert alert-danger p-3 mb-4" role="alert">
+                    @foreach($errors->all() as $err)
+                    {{$err}} <br>
+                    @endforeach
                     </div>
-                    
-                <%
-                    }); }
-                %>
+                @endif
+
+                @if(session('msg'))
+                <div class="'alert alert-{{session('type')}} p-3 mb-4" role="alert">
+                {{session('msg')}}
+                </div>
+                @endif
 
 
                 <table class="table table-borderless table-hover shadow">
                     <thead>
                       <tr>
-                        <th scope="col">No.</th>
+                        <th scope="col">Order ID</th>
                         <th scope="col">Order Date</th>
                         <th scope="col">Purchase Amount (Taka)</th>
-                        <th scope="col">Ship Method</th>
+                        <th scope="col">Shipping Method</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Details</th>
                       </tr>
                     </thead>
                     <tbody>
 
-                    <% var i=1;
-                    history.forEach( function(std){ %>
+                   @for($i=0; $i<count($orders); $i++)
                       <tr>
-                        <th> <%= i %></th>
-                        <td> <%= std.orderdate %></td>
-                        <td> <%= std.subtotal %></td>
-                        <td> <%= std.shipmethod %></td>
+                        <th>{{$orders[$i]->oid}}</th>
+                        <td>{{$orders[$i]->date}}</td>
+                        <td>{{$orders[$i]->subtotal}} ৳</td>
+                        <td>{{$orders[$i]->shipping_method}}</td>
+                        <td>{{$orders[$i]->status}}</td>
+                        <td><a href="{{route('customer.order_details',[$orders[$i]->oid])}}" class='text-info'>view details</a></td>
                       </tr>
-                    <% i++;
-                        }); 
-                    %>
+                    @endfor
                     
                     </tbody>
                   </table>
