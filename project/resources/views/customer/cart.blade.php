@@ -147,7 +147,7 @@
                 <form method="post">
                 @csrf
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-warning mt-3 p-0 px-1" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" class="btn btn-warning btn-sm mt-3" data-toggle="modal" data-target="#exampleModal">
                     Buy Now                
                 </button>
                 <!-- Modal -->                

@@ -82,6 +82,7 @@
                         <th scope="col">Shipping Method</th>
                         <th scope="col">Status</th>
                         <th scope="col">Details</th>
+                        <th scope="col">PDF</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -94,6 +95,7 @@
                         <td>{{$orders[$i]->shipping_method}}</td>
                         <td>{{$orders[$i]->status}}</td>
                         <td><a href="{{route('customer.order_details',[$orders[$i]->oid])}}" class='text-info'>view details</a></td>
+                        <td><a href="{{route('customer.generate_pdf',[$orders[$i]->oid])}}" class='text-info'><button type="button" class="btn btn-danger btn-sm">Print</button></a></td>
                       </tr>
                     @endfor
                     

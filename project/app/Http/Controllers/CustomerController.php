@@ -252,5 +252,54 @@ class CustomerController extends Controller
         return view('customer.orderDetails')->with('orderDetails',$orderDetails);
         
     }  
+    public function generate_pdf(Request $req, $oid)
+    {
+        $orderDetails = DB::select("SELECT orders.oid, title, invoice.sellerid, shop_name, quantity, invoice.price, subtotal, date, shipping_method, orders.status FROM invoice,orders,products where invoice.oid=orders.oid and invoice.sellerid=products.sellerid and orders.oid=?", [$oid]);
+        // print_r ($users[0]->title);
+        // return view('customer.orderDetails')->with('orderDetails',$orderDetails);
+        
+        $data= "<h1 style='text-align: center; margin-bottom: 100px;'>Agro-Commers</h1>".
+        $data= "<h3 style='color:red;'>Order Details:</h3>".
+                "<table border='1' style='margin-left: auto; margin-right: auto;'>".
+                    "<thead>".
+                      "<tr>".
+                        "<th scope='col'>oid</th>".
+                        "<th scope='col'>Title</th>".
+                        "<th scope='col'>Seller Id</th>".
+                        "<th scope='col'>Shop</th>".
+                        "<th scope='col'>Quantity</th>".
+                        "<th scope='col'>Price</th>".
+                        "<th scope='col'>Total</th>".
+                        "<th scope='col'>Order Date</th>".
+                        "<th scope='col'>Shipping Method</th>".
+                        "<th scope='col'>Status</th>".
+                      "</tr>".
+                    "</thead>".
+                    "<tbody>";
+
+                    for($i=0; $i<count($orderDetails); $i++){
+                      $rows="<tr>".
+                        "<th>".$orderDetails[$i]->oid."</th>".
+                        "<td>".$orderDetails[$i]->title."</td>".
+                        "<td>".$orderDetails[$i]->sellerid."</td>".
+                        "<td>".$orderDetails[$i]->shop_name."</td>".
+                        "<td>".$orderDetails[$i]->quantity."</td>".
+                        "<td>".$orderDetails[$i]->price ."/=</td>".
+                        "<td>".$orderDetails[$i]->subtotal ."/=</td>".
+                        "<td>".$orderDetails[$i]->date."</td>".
+                        "<td>".$orderDetails[$i]->shipping_method."</td>".
+                        "<td>".$orderDetails[$i]->status."</td>".
+                      "</tr>";
+                      $data=$data.$rows;
+                    }                    
+                    $data=$data."</tbody>".
+                  "</table>";
+                //   echo $data;
+                //--------------------PDF generation--------------------
+                $pdf= \PDF::loadHTML($data);        
+                return $pdf->stream();
+                  
+        
+    }  
     
 }
