@@ -33,6 +33,7 @@ Route::group(['middleware'=>['profile','role']], function(){
     
     Route::get('/history', 'CustomerController@history')->name('customer.history');
     Route::get('/order_details/{oid}', 'CustomerController@order_details')->name('customer.order_details');
+    Route::post('/order_details/{oid}', 'CustomerController@add_review')->name('customer.order_details');
     Route::get('/generate_pdf/{oid}', 'CustomerController@generate_pdf')->name('customer.generate_pdf');
 
 });

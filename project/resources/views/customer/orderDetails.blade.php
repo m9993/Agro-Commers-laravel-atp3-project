@@ -86,10 +86,11 @@
                         <th scope="col">Order Date</th>
                         <th scope="col">Shipping Method</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Review</th>
                       </tr>
                     </thead>
                     <tbody>
-
+                    
                     @for($i=0; $i<count($orderDetails); $i++)
                       <tr>
                         <th>{{$orderDetails[$i]->oid}}</th>
@@ -102,6 +103,49 @@
                         <td>{{$orderDetails[$i]->date}}</td>
                         <td>{{$orderDetails[$i]->shipping_method}}</td>
                         <td>{{$orderDetails[$i]->status}}</td>
+                        <td>
+                        <!-- add review form -->
+                        <form method="post">
+                        @csrf
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
+                            Add                
+                        </button>
+                        <!-- Modal -->                
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add Review</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!--  -->
+                                <label><b>Title:</b> {{$orderDetails[$i]->title}}</label>
+                                <br>
+                                <label><b>Shop Name:</b> {{$orderDetails[$i]->shop_name}}</label>
+                                <br>
+                                <div class="form-group">
+                                    <!-- <label><b>Product ID:</b></label> -->
+                                    <input name='pid' value='{{$orderDetails[$i]->pid}}'  class="form-control form-control-sm" type="hidden" placeholder=".form-control-sm">
+
+                                    <label for="exampleFormControlTextarea1"><b>Review:</b></label>
+                                    <textarea name='review' class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                                <!--  -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Confirm</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        </form>
+                        <!-- add review form -->
+                        </td>
                       </tr>
                     @endfor
                     

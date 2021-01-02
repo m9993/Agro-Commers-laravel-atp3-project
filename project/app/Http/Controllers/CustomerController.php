@@ -10,6 +10,7 @@ use App\Products;
 use App\Orders;
 use App\Invoice;
 use App\Order_history;
+use App\Review;
 
 use App\Cart;
 
@@ -247,14 +248,14 @@ class CustomerController extends Controller
     }  
     public function order_details(Request $req, $oid)
     {
-        $orderDetails = DB::select("SELECT orders.oid, title, invoice.sellerid, shop_name, quantity, invoice.price, subtotal, date, shipping_method, orders.status FROM invoice,orders,products where invoice.oid=orders.oid and invoice.sellerid=products.sellerid and orders.oid=?", [$oid]);
+        $orderDetails = DB::select("SELECT orders.oid, pid,title, invoice.sellerid, shop_name, quantity, invoice.price, subtotal, date, shipping_method, orders.status FROM invoice,orders,products where invoice.oid=orders.oid and invoice.sellerid=products.sellerid and orders.oid=?", [$oid]);
         // print_r ($users[0]->title);
         return view('customer.orderDetails')->with('orderDetails',$orderDetails);
         
     }  
     public function generate_pdf(Request $req, $oid)
     {
-        $orderDetails = DB::select("SELECT orders.oid, title, invoice.sellerid, shop_name, quantity, invoice.price, subtotal, date, shipping_method, orders.status FROM invoice,orders,products where invoice.oid=orders.oid and invoice.sellerid=products.sellerid and orders.oid=?", [$oid]);
+        $orderDetails = DB::select("SELECT orders.oid, pid,title, invoice.sellerid, shop_name, quantity, invoice.price, subtotal, date, shipping_method, orders.status FROM invoice,orders,products where invoice.oid=orders.oid and invoice.sellerid=products.sellerid and orders.oid=?", [$oid]);
         // print_r ($users[0]->title);
         // return view('customer.orderDetails')->with('orderDetails',$orderDetails);
         
@@ -269,14 +270,14 @@ class CustomerController extends Controller
                         "<th scope='col'>Shop</th>".
                         "<th scope='col'>Quantity</th>".
                         "<th scope='col'>Price</th>".
-                        "<th scope='col'>Total</th>".
+                        // "<th scope='col'>Total</th>".
                         "<th scope='col'>Order Date</th>".
                         "<th scope='col'>Shipping Method</th>".
                         "<th scope='col'>Status</th>".
                       "</tr>".
                     "</thead>".
                     "<tbody>";
-
+                    $subtotal=0;
                     for($i=0; $i<count($orderDetails); $i++){
                       $rows="<tr>".
                         "<th>".$orderDetails[$i]->oid."</th>".
@@ -285,20 +286,45 @@ class CustomerController extends Controller
                         "<td>".$orderDetails[$i]->shop_name."</td>".
                         "<td>".$orderDetails[$i]->quantity."</td>".
                         "<td>".$orderDetails[$i]->price ."/=</td>".
-                        "<td>".$orderDetails[$i]->subtotal ."/=</td>".
+                        // "<td>".$orderDetails[$i]->subtotal ."/=</td>".
                         "<td>".$orderDetails[$i]->date."</td>".
                         "<td>".$orderDetails[$i]->shipping_method."</td>".
                         "<td>".$orderDetails[$i]->status."</td>".
                       "</tr>";
+                      $subtotal=$orderDetails[$i]->subtotal;
                       $data=$data.$rows;
                     }                    
                     $data=$data."</tbody>".
-                  "</table>";
+                    "</table>".
+                    "<h3 style='color: #117a8b; float:right;'>Total: ".$subtotal."/= Taka</h3>";
                 //   echo $data;
                 //--------------------PDF generation--------------------
                 $pdf= \PDF::loadHTML($data);        
                 return $pdf->stream();
                   
+        
+    } 
+    public function add_review(Request $req)
+    {
+        $req->validate([
+            'pid' => 'required',          
+            'review' => 'required'          
+        ]); 
+        $sellerid = DB::select("select sellerid from products where pid=?", [$req->pid]);
+        $sellerid= $sellerid[0]->sellerid;
+        // echo $sellerid;
+
+        $newReview = new Review();
+        $newReview->customerid = $req->session()->get('profile')->uid;
+        $newReview->sellerid = $sellerid;
+        $newReview->productid = $req->pid;
+        $newReview->review = $req->review;
+        $newReview->date = NOW();        
+        $newReview->save();
+        
+        $req->session()->flash('msg', 'Review added.');
+        $req->session()->flash('type','success');
+        return back();
         
     }  
     
