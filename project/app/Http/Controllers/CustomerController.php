@@ -326,6 +326,16 @@ class CustomerController extends Controller
         $req->session()->flash('type','success');
         return back();
         
+    }
+    public function view_product_review(Request $req, $pid)
+    {
+        $product = DB::select("select * from products where pid=?", [$req->pid]);
+        // echo $product[0];
+
+        $productReviews = DB::select("select * from review where productid=?", [$req->pid]);
+        return view('customer.review')
+            ->with('productReviews',$productReviews)
+            ->with('product',$product[0]);
     }  
     
 }

@@ -36,4 +36,6 @@ Route::group(['middleware'=>['profile','role']], function(){
     Route::post('/order_details/{oid}', 'CustomerController@add_review')->name('customer.order_details');
     Route::get('/generate_pdf/{oid}', 'CustomerController@generate_pdf')->name('customer.generate_pdf');
 
+    Route::get('/view_product_review/{pid}', 'CustomerController@view_product_review')->name('customer.view_product_review');
+
 });

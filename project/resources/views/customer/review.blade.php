@@ -36,23 +36,28 @@
                 </div>
             </div>
         </nav>
+
+
+
+
                <!--Body Section-->
         <section class="page-section portfolio" id="portfolio">
             <div class="container">
                 <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a"><i class="fas fa-volume-up"></i> Notice</a>
                 <a href="/customer/email" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-envelope"></i> Emails</a>
-                <a href="{{route('customer.history')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-history"></i> History</a>
+                <a href="{{route('customer.history')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a active"><i class="fas fa-history"></i> History</a>
                 <a href="{{route('customer.cart')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-shopping-cart"></i> Cart</a>
             </div>
-            
-
         </section>
 
 
 
+
+        
                 <!--Body Section 2  -->
-        <section class="page-section portfolio p-3" id="portfolio">
+        <section class="page-section portfolio p-3 mb-5" id="portfolio">
             <div class="container">
+
                 @if(count($errors)>0)
                     <div class="alert alert-danger p-3 mb-4" role="alert">
                     @foreach($errors->all() as $err)
@@ -66,86 +71,52 @@
                 {{session('msg')}}
                 </div>
                 @endif
-            
 
-
-                <div class="form-group">
-                    <input id="searchKey" class="form-control form-control-lg" type="text" placeholder="Search product title">
-                </div>
-
-
-                <div class="d-flex flex-wrap justify-content-center" id="productCart">
-                <!--  -->
+                <img src="/img/{{$product->image}}" alt="" height='100' width='170' class='img-fluid shadow'>
+                <div class='mt-4'><b class='text-right'>Title:</b> {{$product->title}}</div>
+                <div class=''><b class='text-right'>Shop Name:</b> {{$product->shop_name}}</div>
+                <br>
+                <div class='mb-2'><b>Reviews:</b></div>
+                
+                <table class="table table-borderless table-hover shadow">
+                    <thead>
+                      <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Review</th>
+                        <th scope="col">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                     
-                @for($i=0; $i< count($products); $i++)
-                        <div class="card m-4 shadow" style="width: 18rem;">
-                            <img class="card-img-top" src="/img/{{$products[$i]->image}}" alt="Card image cap">
-                            <div class="card-body">
-                            <h5 class="card-title">{{$products[$i]->title}}</h5>
-                            <p class="card-text mb-2"><b>Price: </b>{{$products[$i]->price}} ৳</p>
-                            <p class="card-text mb-2"><b>Shop: </b>{{$products[$i]->shop_name}}</p>
-                            <p class="card-text mb-2"><b>Description: </b>{{$products[$i]->description}}</p>
-                            <p class="card-text mb-2"><b>Status: </b>{{$products[$i]->status}}</p>
-                            <p class="card-text mb-2 p-0"><a href="{{route('customer.view_product_review',[$products[$i]->pid])}}" class='text-danger'>View reviews</p>
-                            @if($products[$i]->status=='not available')
-                                <a href="" class="btn btn-primary px-2 py-1 disabled" >Add to cart</a>
-                            @endif
-                            @if($products[$i]->status=='available')
-                                <a href="{{route('customer.add-to-cart',[$products[$i]->pid])}}" class="btn btn-primary px-2 py-1" >Add to cart</a>
-                            @endif
-                            </div>
-                        </div>
-                @endfor
-                <!--  -->
-
-                </div>
-
+                    @for($i=0; $i<count($productReviews); $i++)
+                      <tr>
+                        <th>{{$i}}</th>
+                        <td>{{$productReviews[$i]->review}}</td>
+                        <td>{{$productReviews[$i]->date}}</td>
+                        
+                      </tr>
+                    @endfor
+                    
+                    </tbody>
+                  </table>
+               
+                
+                
                 
 
 
 
 
 
+
             </div>
         </section>
 
 
 
 
-       
-        <!-- Contact Section-->
-        <section class="page-section" id="contact">
-            <hr>
-            <div class="container">
-                <!-- Contact Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Contact</h2>
-                <hr>
-                <!-- Contact Section Form-->
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <form id="contactForm" name="sentMessage" method="POST">
-                            <div class="control-group">
-                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                                    <label>Email Address</label>
-                                    <input name="receivermail" class="form-control" id="email" type="email" placeholder="Email Address"  data-validation-required-message="Please enter your email address." />
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                                    <label>Message</label>
-                                    <textarea name="conmessage" class="form-control" id="message" rows="5" placeholder="Message"  data-validation-required-message="Please enter a message."></textarea>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <br />
-                            <div id="success"></div>
-                            <div class="form-group"><button class="btn btn-primary" id="sendMessageButton" type="submit">Send</button></div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+
+
         <!-- Footer-->
         <footer class="footer text-center">
             <div class="container">
@@ -204,50 +175,5 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
         <!-- Core theme JS-->
         <script src="/js/scripts.js"></script>
-
-
-        <!-- jquery -->
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <!-- jquery -->
-        <!-- Ajax Search -->
-        <script>
-            $(document).ready(()=>{
-                $('#searchKey').on('keyup',()=>{
-                var key= $('#searchKey').val();
-                    $.ajax({
-                        type: 'get',
-                        url:"{{ route('customer.searchProducts') }}",
-                        data: {searchKey: key},
-                        dataType: 'json',
-                        success:(res)=>{
-                            var data="";
-                            for(var i=0; i<res.length; i++){
-                                var d=''; 
-                                if(res[i].status!='available'){d='disabled';}
-                                    var cart=
-                                    "<div class='card m-4 shadow' style='width: 18rem;'>"
-                                        +"<img class='card-img-top' src='/img/"+res[i].image+"' alt='Card image cap'>"
-                                        +"<div class='card-body'>"
-                                        +"<h5 class='card-title'>"+res[i].title+"</h5>"
-                                        +"<p class='card-text'><b>Price: </b>"+res[i].price+" ৳</p>"
-                                        +"<p class='card-text'><b>Shop: </b>"+res[i].shop_name+"</p>"
-                                        +"<p class='card-text'><b>Details: </b>"+res[i].description+"</p>"
-                                        +"<p class='card-text'><b>Status: </b>"+res[i].status+"</p>"
-                                        +"<a href='/add-to-cart/"+res[i].pid+"' class='btn btn-primary "+ d +"' >Add to cart</a>"
-                                        +"</div>"
-                                    +"</div>"
-                                    data+=cart;
-                            }
-                            if(res.length==0){
-                                var data="<b class='text-danger'>No data found.</b>"; 
-                            }
-                            $('#productCart').html(data);
-                        },
-                        error:(res)=>{alert('Error serching!!!!!!!!');}
-                    });
-                });
-            });
-        </script>
-
     </body>
 </html>
