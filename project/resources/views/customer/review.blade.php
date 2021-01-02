@@ -72,11 +72,11 @@
                 </div>
                 @endif
 
-                <img src="/img/{{$product->image}}" alt="" height='100' width='170' class='img-fluid shadow'>
+                <img src="/img/{{$product->image}}" alt="" height='100' width='170' class='img-fluid shadow rounded'>
                 <div class='mt-4'><b class='text-right'>Title:</b> {{$product->title}}</div>
                 <div class=''><b class='text-right'>Shop Name:</b> {{$product->shop_name}}</div>
                 <br>
-                <div class='mb-2'><b>Reviews:</b></div>
+                <div class='mb-1'><b>Reviews:</b></div>
                 
                 <table class="table table-borderless table-hover shadow">
                     <thead>
@@ -90,7 +90,7 @@
                     
                     @for($i=0; $i<count($productReviews); $i++)
                       <tr>
-                        <th>{{$i}}</th>
+                        <th>{{$n=$i+1}}</th>
                         <td>{{$productReviews[$i]->review}}</td>
                         <td>{{$productReviews[$i]->date}}</td>
                         

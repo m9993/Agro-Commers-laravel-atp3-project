@@ -233,6 +233,7 @@
                                         +"<p class='card-text'><b>Shop: </b>"+res[i].shop_name+"</p>"
                                         +"<p class='card-text'><b>Details: </b>"+res[i].description+"</p>"
                                         +"<p class='card-text'><b>Status: </b>"+res[i].status+"</p>"
+                                        +"<p class='card-text mb-2 p-0'><a href='/view_product_review/"+res[i].pid+"' class='text-danger'>View reviews</p>"
                                         +"<a href='/add-to-cart/"+res[i].pid+"' class='btn btn-primary "+ d +"' >Add to cart</a>"
                                         +"</div>"
                                     +"</div>"
