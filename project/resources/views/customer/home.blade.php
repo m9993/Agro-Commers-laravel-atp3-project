@@ -1,3 +1,6 @@
+<!-- editProfile trigger modal -->
+@include ('customer.editProfile')
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -29,7 +32,8 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item mx-0 mx-lg-1"><a href="#page-top" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fa fa-user mr-1 pr-1" aria-hidden="true"></i>Welcome, {{session('profile.name')}} </a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a href="/customer/editProfile" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-user-edit mr-1 pr-1"></i>Profile</a></li>
+                        <!-- editProfile Button trigger modal -->
+                        <li class="nav-item mx-0 mx-lg-1"><a href="#" data-toggle="modal" data-target="#editProfile" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-user-edit mr-1 pr-1"></i>Profile</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a href="#contact" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-envelope mr-1 pr-1"></i>Contact</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a href="{{route('customer.logout')}}" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-sign-out-alt mr-1 pr-1"></i>Logout</a></li>
                     </ul>
@@ -47,7 +51,6 @@
             
 
         </section>
-
 
 
                 <!--Body Section 2  -->

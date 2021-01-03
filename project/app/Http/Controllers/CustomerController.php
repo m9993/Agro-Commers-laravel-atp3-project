@@ -337,5 +337,31 @@ class CustomerController extends Controller
             ->with('productReviews',$productReviews)
             ->with('product',$product[0]);
     }  
+    public function editProfile(Request $req)
+    {
+        $req->validate([
+            'name' => 'required',          
+            'email' => 'required|email|unique:users,email,'.$req->session()->get('profile')->uid.',uid',       
+            'address' => 'required',          
+            'password' => 'required',          
+            'phone' => 'required|min:11|unique:users,phone,'.$req->session()->get('profile')->phone.',phone'          
+        ]); 
+
+        $user = Users::find($req->session()->get('profile')->uid);
+        $user->name         = $req->name;
+        $user->email     = $req->email;
+        $user->address     = $req->address;
+        $user->password    = $req->password;
+        $user->phone         = $req->phone;
+        $user->save();
+        
+        $getUser=Users::all()->where('uid', $req->session()->get('profile')->uid);
+        $req->session()->put('profile',$getUser[0]);        
+        $req->session()->put('role',$getUser[0]->role);
+
+        $req->session()->flash('msg','Profile updated successfully.');
+        $req->session()->flash('type','success');            
+        return redirect()->route('customer.home');
+    }  
     
 }
