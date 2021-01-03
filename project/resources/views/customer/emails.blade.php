@@ -1,5 +1,7 @@
 <!-- editProfile trigger modal -->
 @include ('customer.editProfile')
+<!-- contact trigger modal -->
+@include ('customer.contact')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +36,8 @@
                         <li class="nav-item mx-0 mx-lg-1"><a href="#page-top" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fa fa-user mr-1 pr-1" aria-hidden="true"></i>Welcome, {{session('profile.name')}} </a></li>
                         <!-- editProfile Button trigger modal -->
                         <li class="nav-item mx-0 mx-lg-1"><a href="#" data-toggle="modal" data-target="#editProfile" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-user-edit mr-1 pr-1"></i>Profile</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a href="#contact" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-envelope mr-1 pr-1"></i>Contact</a></li>
+                        <!-- contact Button trigger modal -->
+                        <li class="nav-item mx-0 mx-lg-1"><a href="#" data-toggle="modal" data-target="#contact" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-envelope mr-1 pr-1"></i>Contact</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a href="{{route('customer.logout')}}" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-sign-out-alt mr-1 pr-1"></i>Logout</a></li>
                     </ul>
                 </div>
@@ -48,7 +51,7 @@
         <section class="page-section portfolio" id="portfolio">
             <div class="container">
                 <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a"><i class="fas fa-volume-up"></i> Notice</a>
-                <a href="/customer/email" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a active"><i class="fas fa-envelope"></i> Emails</a>
+                <a href="{{route('customer.view_emails')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a active"><i class="fas fa-envelope"></i> Emails</a>
                 <a href="{{route('customer.history')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-history"></i> History</a>
                 <a href="{{route('customer.cart')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-shopping-cart"></i> Cart</a>
             </div>
@@ -61,19 +64,7 @@
                 <!--Body Section 2  -->
         <section class="page-section portfolio p-3 mb-5" id="portfolio">
             <div class="container">
-
-                <%
-                if(typeof alert!='undefined'){
-                alert.forEach( function(i){ %>
-                    <div class="mb-5 alert alert-<%= i.type%>" role="alert">
-                        <%= i.msg %>
-                    </div>
-                    
-                <%
-                    }); }
-                %>
-
-
+                <div class='text-info h6 mt-3'>Received Emails:</div>
                 <table class="table table-borderless table-hover shadow">
                     <thead>
                       <tr>
@@ -85,17 +76,14 @@
                     </thead>
                     <tbody>
 
-                    <% var i=1;
-                    email.forEach( function(std){ %>
+                    @for($i=0; $i< count($contacts); $i++)
                       <tr>
-                        <th> <%= i %></th>
-                        <td> <%= std.sendermail %></td>
-                        <td><%= std.receivermail %></td>
-                        <td> <%= std.conmessage %></td>
+                        <th>{{$j=$i+1}}</th>
+                        <td>{{$contacts[$i]->sender_email}}</td>
+                        <td>{{$contacts[$i]->receiver_email}}</td>
+                        <td>{{$contacts[$i]->message}}</td>
                       </tr>
-                    <% i++;
-                        }); 
-                    %>
+                    @endfor
                     
                     </tbody>
                   </table>

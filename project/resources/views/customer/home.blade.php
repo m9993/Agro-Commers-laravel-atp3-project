@@ -1,5 +1,7 @@
 <!-- editProfile trigger modal -->
 @include ('customer.editProfile')
+<!-- contact trigger modal -->
+@include ('customer.contact')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +36,8 @@
                         <li class="nav-item mx-0 mx-lg-1"><a href="#page-top" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fa fa-user mr-1 pr-1" aria-hidden="true"></i>Welcome, {{session('profile.name')}} </a></li>
                         <!-- editProfile Button trigger modal -->
                         <li class="nav-item mx-0 mx-lg-1"><a href="#" data-toggle="modal" data-target="#editProfile" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-user-edit mr-1 pr-1"></i>Profile</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a href="#contact" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-envelope mr-1 pr-1"></i>Contact</a></li>
+                        <!-- contact Button trigger modal -->
+                        <li class="nav-item mx-0 mx-lg-1"><a href="#" data-toggle="modal" data-target="#contact" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-envelope mr-1 pr-1"></i>Contact</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a href="{{route('customer.logout')}}" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"><i class="fas fa-sign-out-alt mr-1 pr-1"></i>Logout</a></li>
                     </ul>
                 </div>
@@ -44,7 +47,7 @@
         <section class="page-section portfolio" id="portfolio">
             <div class="container">
                 <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a"><i class="fas fa-volume-up"></i> Notice</a>
-                <a href="/customer/email" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-envelope"></i> Emails</a>
+                <a href="{{route('customer.view_emails')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-envelope"></i> Emails</a>
                 <a href="{{route('customer.history')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-history"></i> History</a>
                 <a href="{{route('customer.cart')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-shopping-cart"></i> Cart</a>
             </div>
@@ -116,41 +119,9 @@
 
 
        
-        <!-- Contact Section-->
-        <section class="page-section" id="contact">
-            <hr>
-            <div class="container">
-                <!-- Contact Section Heading-->
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Contact</h2>
-                <hr>
-                <!-- Contact Section Form-->
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <form id="contactForm" name="sentMessage" method="POST">
-                            <div class="control-group">
-                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                                    <label>Email Address</label>
-                                    <input name="receivermail" class="form-control" id="email" type="email" placeholder="Email Address"  data-validation-required-message="Please enter your email address." />
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                                    <label>Message</label>
-                                    <textarea name="conmessage" class="form-control" id="message" rows="5" placeholder="Message"  data-validation-required-message="Please enter a message."></textarea>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <br />
-                            <div id="success"></div>
-                            <div class="form-group"><button class="btn btn-primary" id="sendMessageButton" type="submit">Send</button></div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+    
         <!-- Footer-->
-        <footer class="footer text-center">
+        <footer class="footer text-center mt-5">
             <div class="container">
                 <div class="row">
                     <!-- Footer Location-->

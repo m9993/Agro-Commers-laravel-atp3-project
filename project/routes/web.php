@@ -39,5 +39,8 @@ Route::group(['middleware'=>['profile','role']], function(){
     Route::get('/view_product_review/{pid}', 'CustomerController@view_product_review')->name('customer.view_product_review');
     
     Route::post('/editProfile', 'CustomerController@editProfile')->name('customer.editProfile');
+    Route::post('/contact', 'CustomerController@contact')->name('customer.contact');
+
+    Route::get('/view_emails', 'CustomerController@view_emails')->name('customer.view_emails');
 
 });

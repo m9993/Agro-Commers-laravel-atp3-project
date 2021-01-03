@@ -11,6 +11,7 @@ use App\Orders;
 use App\Invoice;
 use App\Order_history;
 use App\Review;
+use App\Contact;
 
 use App\Cart;
 
@@ -363,5 +364,26 @@ class CustomerController extends Controller
         $req->session()->flash('type','success');            
         return redirect()->route('customer.home');
     }  
-    
+    public function contact(Request $req)
+    {
+        $req->validate([         
+            'receiver_email' => 'required|email|exists:users,email',       
+            'message' => 'required'
+        ]); 
+
+        $newContact = new Contact();
+        $newContact->sender_email = $req->session()->get('profile')->email;
+        $newContact->receiver_email = $req->receiver_email;
+        $newContact->message = $req->message;
+        $newContact->save();
+
+        $req->session()->flash('msg','Message sent.');
+        $req->session()->flash('type','success');            
+        return redirect()->route('customer.home');
+    } 
+    public function view_emails(Request $req)
+    {
+        $contacts = Contact::where('receiver_email', $req->session()->get('profile')->email)->get();
+        return view('customer.emails')->with('contacts',$contacts);
+    } 
 }
