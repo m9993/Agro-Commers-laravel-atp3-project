@@ -50,7 +50,7 @@
                <!--Body Section-->
         <section class="page-section portfolio" id="portfolio">
             <div class="container">
-                <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a"><i class="fas fa-volume-up"></i> Notice</a>
+                <a href="{{route('customer.view_notice')}}" class="float-right mt-2 mt-md-4 mt-lg-5 body-a"><i class="fas fa-volume-up"></i> Notice</a>
                 <a href="{{route('customer.view_emails')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-envelope"></i> Emails</a>
                 <a href="{{route('customer.history')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a active"><i class="fas fa-history"></i> History</a>
                 <a href="{{route('customer.cart')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-shopping-cart"></i> Cart</a>
@@ -115,11 +115,11 @@
                         <form method="post">
                         @csrf
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#addReview">
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#addreview-{{$i}}">
                             Add                
                         </button>
                         <!-- Modal -->                
-                        <div class="modal fade" id="addReview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="addreview-{{$i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                             <div class="modal-header">

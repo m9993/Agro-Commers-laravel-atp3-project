@@ -12,6 +12,7 @@ use App\Invoice;
 use App\Order_history;
 use App\Review;
 use App\Contact;
+use App\Notice;
 
 use App\Cart;
 
@@ -33,7 +34,7 @@ class CustomerController extends Controller
         // shows data  
 
         $getUser=Users::all()->where('email', $user->email);
-        if(count($getUser)<1){   
+        if(count($getUser)==0){   
             $newUser = new Users();
             $newUser->name = $user->name;
             $newUser->role = 'customer';
@@ -50,7 +51,7 @@ class CustomerController extends Controller
             $req->session()->flash('msg', 'GitHub login successful.');
             $req->session()->flash('type','success');
         }
-        $getUser=Users::all()->where('email', $user->email);
+        $getUser=Users::where('email', $user->email)->get();
         $req->session()->put('profile',$getUser[0]);        
         $req->session()->put('role',$getUser[0]->role);
         return redirect()->route('customer.home');
@@ -356,7 +357,7 @@ class CustomerController extends Controller
         $user->phone         = $req->phone;
         $user->save();
         
-        $getUser=Users::all()->where('uid', $req->session()->get('profile')->uid);
+        $getUser=Users::where('uid', $req->session()->get('profile')->uid)->get();
         $req->session()->put('profile',$getUser[0]);        
         $req->session()->put('role',$getUser[0]->role);
 
@@ -385,5 +386,10 @@ class CustomerController extends Controller
     {
         $contacts = Contact::where('receiver_email', $req->session()->get('profile')->email)->get();
         return view('customer.emails')->with('contacts',$contacts);
+    } 
+    public function view_notice(Request $req)
+    {
+        $notices = Notice::get();
+        return view('customer.notice')->with('notices',$notices);
     } 
 }

@@ -42,5 +42,6 @@ Route::group(['middleware'=>['profile','role']], function(){
     Route::post('/contact', 'CustomerController@contact')->name('customer.contact');
 
     Route::get('/view_emails', 'CustomerController@view_emails')->name('customer.view_emails');
+    Route::get('/view_notice', 'CustomerController@view_notice')->name('customer.view_notice');
 
 });

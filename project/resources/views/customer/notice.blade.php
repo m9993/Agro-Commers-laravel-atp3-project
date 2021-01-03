@@ -50,7 +50,7 @@
                <!--Body Section-->
         <section class="page-section portfolio" id="portfolio">
             <div class="container">
-                <a href="/customer/notice" class="float-right mt-2 mt-md-4 mt-lg-5 body-a active"><i class="fas fa-volume-up"></i> Notice</a>
+                <a href="{{route('customer.view_notice')}}" class="float-right mt-2 mt-md-4 mt-lg-5 body-a active"><i class="fas fa-volume-up"></i> Notice</a>
                 <a href="{{route('customer.view_emails')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-envelope"></i> Emails</a>
                 <a href="{{route('customer.history')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-history"></i> History</a>
                 <a href="{{route('customer.cart')}}" class="float-right mt-2 mt-md-4 mt-lg-5 mr-3 body-a"><i class="fas fa-shopping-cart"></i> Cart</a>
@@ -65,18 +65,7 @@
         <section class="page-section portfolio p-3 mb-5" id="portfolio">
             <div class="container">
 
-                <%
-                if(typeof alert!='undefined'){
-                alert.forEach( function(i){ %>
-                    <div class="mb-5 alert alert-<%= i.type%>" role="alert">
-                        <%= i.msg %>
-                    </div>
-                    
-                <%
-                    }); }
-                %>
-
-
+                <div class='text-info h6 mt-3'>Notices:</div>
                 <table class="table table-borderless table-hover shadow">
                     <thead>
                       <tr>
@@ -86,15 +75,12 @@
                     </thead>
                     <tbody>
 
-                    <%
-                    notice.forEach( function(std){ %>
+                    @for($i=0; $i< count($notices); $i++)
                       <tr>
-                        <th> <%= std.nid %></th>
-                        <td> <%= std.notice %></td>
+                        <th>{{$j=$i+1}}</th>
+                        <td>{{$notices[$i]->notice}}</td>
                       </tr>
-                    <%
-                        }); 
-                    %>
+                    @endfor
                     
                     </tbody>
                   </table>
